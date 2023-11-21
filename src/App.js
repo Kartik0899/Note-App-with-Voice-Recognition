@@ -3,6 +3,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [noteItems, setNoteItems] = useState([]);
@@ -35,7 +37,11 @@ const App = () => {
   }
 
   const HandleNote = () => {
-    if (!userInput.trim() && !transcript.trim()) return; // Don't add empty notes
+    // Don't add empty notes
+    if (!userInput.trim() && !transcript.trim()) {
+      toast.error("Please enter a note");
+      return;
+    }
 
     const note = userInput || transcript;
     resetTranscript();
@@ -55,6 +61,10 @@ const App = () => {
   };
 
   const handleReset = () => {
+    if (!userInput.trim() && !transcript.trim()) {
+      toast("It's already empty");
+      return;
+    }
     resetTranscript();
     setUserInput("");
   };
@@ -112,6 +122,30 @@ const App = () => {
           Your Note list is empty
         </h3>
       )}
+
+      <div
+        style={{
+          textAlign: "center",
+          position: "absolute",
+          bottom: "2%",
+          width: "100%",
+          fontWeight: "bold",
+          letterSpacing: "0.5px",
+        }}
+      >
+        Copyright © 2023
+      </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        theme="dark"
+      />
     </div>
   );
 };
